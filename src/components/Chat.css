@@ -1,0 +1,410 @@
+.chat__header {
+  margin-bottom: 1.8rem;
+}
+
+.chat__kicker {
+  color: #cfa66a;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.chat__header .section-title {
+  margin-bottom: 0.8rem;
+}
+
+.chat__subtitle {
+  color: var(--clr-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-top: 0.5rem;
+  font-weight: 300;
+}
+
+.chat__box {
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 197, 91, 0.07), transparent 58%),
+    radial-gradient(circle at 82% 12%, rgba(255, 185, 88, 0.12), transparent 22rem),
+    radial-gradient(circle at 16% 88%, rgba(199, 121, 37, 0.09), transparent 18rem),
+    linear-gradient(145deg, rgba(255, 236, 184, 0.05), rgba(255, 180, 95, 0.018)),
+    var(--clr-surface);
+  border: 1px solid rgba(255, 197, 91, 0.16);
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 236, 184, 0.10),
+    0 28px 78px rgba(0, 0, 0, 0.22);
+}
+
+.chat__box::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4rem;
+  background: linear-gradient(180deg, rgba(255, 180, 95, 0.10), transparent);
+  pointer-events: none;
+}
+
+.chat__neural {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.chat__neural::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 197, 91, 0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 197, 91, 0.09) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), transparent 88%);
+}
+
+/* Blurred glow paths — background layer */
+.chat__path--glow {
+  fill: none;
+  stroke: rgba(255, 185, 88, 0.24);
+  stroke-width: 8;
+  filter: blur(5px);
+}
+
+.chat__path--glow-b {
+  stroke: rgba(199, 121, 37, 0.20);
+}
+
+.chat__neural-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Animated dashed paths */
+.chat__path {
+  fill: none;
+  stroke: rgba(255, 197, 91, 0.58);
+  stroke-width: 1.3;
+  stroke-dasharray: 8 16;
+  filter: drop-shadow(0 0 5px rgba(255, 185, 80, 0.60));
+  animation: neuralTrace 5.8s linear infinite;
+}
+
+.chat__path--b {
+  fill: none;
+  stroke: rgba(199, 121, 37, 0.48);
+  stroke-width: 1.3;
+  stroke-dasharray: 6 18;
+  filter: drop-shadow(0 0 5px rgba(199, 121, 37, 0.48));
+  animation: neuralTrace 7.2s linear infinite reverse;
+}
+
+/* Connector lines between network intersections */
+.chat__connector {
+  stroke: rgba(255, 214, 139, 0.32);
+  stroke-width: 0.8;
+  stroke-dasharray: 3 9;
+  animation: neuralTrace 4s linear infinite;
+}
+
+/* Signal particles traveling along paths */
+.chat__particle {
+  fill: rgba(255, 235, 140, 1);
+  filter:
+    drop-shadow(0 0 3px rgba(255, 220, 90, 1))
+    drop-shadow(0 0 8px rgba(255, 180, 55, 0.90))
+    drop-shadow(0 0 20px rgba(255, 145, 20, 0.55));
+}
+
+.chat__particle--b {
+  fill: rgba(255, 205, 105, 0.92);
+  filter:
+    drop-shadow(0 0 3px rgba(255, 185, 75, 0.95))
+    drop-shadow(0 0 7px rgba(199, 121, 37, 0.75));
+}
+
+/* Pulsing node dots */
+.chat__node {
+  position: absolute;
+  width: 0.58rem;
+  height: 0.58rem;
+  border-radius: 999px;
+  background: rgba(255, 212, 100, 0.96);
+  box-shadow:
+    0 0 0 3px rgba(255, 197, 91, 0.20),
+    0 0 0 7px rgba(255, 197, 91, 0.08),
+    0 0 18px rgba(255, 185, 75, 0.78),
+    0 0 38px rgba(255, 150, 30, 0.38);
+  animation: neuralPulse 2.8s var(--ease-premium) infinite;
+}
+
+/* Expanding ripple ring on each node */
+.chat__node::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 197, 91, 0.55);
+  box-shadow: 0 0 6px rgba(255, 180, 60, 0.20);
+  animation: neuralRipple 2.4s ease-out infinite;
+}
+
+.chat__node--one {
+  top: 24%;
+  left: 18%;
+}
+
+.chat__node--two {
+  top: 54%;
+  left: 42%;
+  animation-delay: 0.45s;
+  background: rgba(255, 214, 139, 0.94);
+  box-shadow:
+    0 0 0 3px rgba(255, 214, 139, 0.18),
+    0 0 0 7px rgba(255, 197, 91, 0.07),
+    0 0 16px rgba(255, 190, 80, 0.68),
+    0 0 32px rgba(255, 150, 20, 0.30);
+}
+
+.chat__node--two::after {
+  animation-delay: -0.8s;
+}
+
+.chat__node--three {
+  top: 30%;
+  right: 20%;
+  animation-delay: 0.9s;
+}
+
+.chat__node--three::after {
+  animation-delay: -1.6s;
+}
+
+.chat__node--four {
+  right: 12%;
+  bottom: 22%;
+  animation-delay: 1.35s;
+  background: rgba(255, 180, 90, 0.90);
+}
+
+.chat__node--four::after {
+  animation-delay: -2.2s;
+}
+
+/* Scan sweeps */
+.chat__scan {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 210, 100, 0.18),
+    rgba(255, 228, 148, 0.10),
+    transparent
+  );
+  transform: translateX(-120%);
+  animation: neuralScan 6.4s var(--ease-premium) infinite;
+}
+
+.chat__scan--b {
+  background: linear-gradient(90deg, transparent, rgba(199, 121, 37, 0.11), transparent);
+  animation-duration: 9.8s;
+  animation-delay: -3.2s;
+}
+
+/* ── Messages ── */
+.chat__messages {
+  position: relative;
+  z-index: 1;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-y: auto;
+  height: 240px;
+}
+
+.chat__empty {
+  color: rgba(255, 224, 163, 0.3);
+  text-align: center;
+  margin: auto;
+  font-size: 0.88rem;
+}
+
+.chat__row {
+  display: flex;
+}
+
+.chat__row--user { justify-content: flex-end; }
+.chat__row--bot  { justify-content: flex-start; }
+
+.chat__bubble {
+  max-width: 80%;
+  padding: 0.625rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  border-radius: 16px;
+}
+
+.chat__bubble--user {
+  background: linear-gradient(135deg, #ffd68b, #c77925);
+  color: #1a1008;
+  border-radius: 12px 12px 2px 12px;
+  font-weight: 500;
+}
+
+.chat__bubble--bot {
+  background: rgba(255, 255, 255, 0.045);
+  color: #eadcc2;
+  border: 1px solid rgba(255, 197, 91, 0.1);
+  border-radius: 12px 12px 12px 2px;
+}
+
+.chat__bubble--typing {
+  color: rgba(234, 220, 194, 0.62);
+  font-style: italic;
+}
+
+.chat__link {
+  color: var(--clr-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ── Input row ── */
+.chat__input-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  border-top: 1px solid rgba(255, 197, 91, 0.1);
+  padding: 0.85rem;
+  background: rgba(12, 10, 7, 0.38);
+}
+
+.chat__input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 197, 91, 0.13);
+  border-right: none;
+  border-radius: 999px 0 0 999px;
+  padding: 0.625rem 1rem;
+  color: var(--clr-text);
+  font-size: 0.9rem;
+  outline: none;
+  font-family: var(--font-body);
+}
+
+.chat__input::placeholder {
+  color: rgba(255, 224, 163, 0.28);
+}
+
+.chat__input:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.chat__send {
+  background: linear-gradient(135deg, #ffd68b, #c77925);
+  color: #1a1008;
+  border: none;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0 999px 999px 0;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  transition: transform 0.25s var(--ease-premium), filter 0.25s var(--ease-premium);
+}
+
+.chat__send:hover  {
+  filter: saturate(1.1);
+  transform: translateX(1px);
+}
+.chat__send:active { transform: scale(0.98); }
+
+.chat__send:disabled {
+  cursor: wait;
+  filter: grayscale(0.35);
+  opacity: 0.68;
+  transform: none;
+}
+
+/* ── Desktop: taller history ── */
+@media (min-width: 769px) {
+  .chat__messages {
+    height: 300px;
+  }
+}
+
+/* ── Mobile: input stays at bottom of section ── */
+@media (max-width: 768px) {
+  .chat__input-row {
+    position: sticky;
+    bottom: 0;
+    background: var(--clr-surface);
+  }
+
+  .chat__neural-lines {
+    opacity: 0.42;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat__path,
+  .chat__path--b,
+  .chat__connector,
+  .chat__node,
+  .chat__node::after,
+  .chat__scan,
+  .chat__scan--b {
+    animation: none;
+  }
+
+  .chat__particle {
+    display: none;
+  }
+}
+
+@keyframes neuralTrace {
+  to { stroke-dashoffset: -104; }
+}
+
+@keyframes neuralPulse {
+  0%, 100% {
+    transform: scale(0.82);
+    opacity: 0.45;
+  }
+  45% {
+    transform: scale(1.32);
+    opacity: 1;
+  }
+}
+
+@keyframes neuralRipple {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+@keyframes neuralScan {
+  0%, 42% {
+    transform: translateX(-120%);
+  }
+  72%, 100% {
+    transform: translateX(120%);
+  }
+}

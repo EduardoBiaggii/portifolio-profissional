@@ -1,0 +1,13 @@
+{
+  "functions": [
+    {
+      "source": "server",
+      "codebase": "portfolio",
+      "ignore": [
+        "node_modules",
+        ".git"
+      ],
+      "predeploy": []
+    }
+  ]
+}

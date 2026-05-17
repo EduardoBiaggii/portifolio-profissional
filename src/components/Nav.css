@@ -1,0 +1,357 @@
+/* ── Desktop ── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  display: grid;
+  grid-template-columns: 1fr 100px 1fr;
+  align-items: stretch;
+}
+
+.nav__left {
+  display: flex;
+  gap: 3rem;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1.2rem 3rem;
+  position: relative;
+  background: transparent;
+  transition: all 0.9s ease;
+}
+
+.nav__center {
+  width: 100px;
+  /* transparent — lamp passes through */
+}
+
+.nav__right {
+  display: flex;
+  gap: 3rem;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1.2rem 3rem;
+  position: relative;
+  background: transparent;
+  transition: all 0.9s ease;
+}
+
+.nav__link {
+  --orbit-color: #e8841a;
+  --orbit-soft: rgba(232, 132, 26, 0.18);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 34px;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  transition: color 0.35s ease, text-shadow 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav__link::before {
+  content: '';
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 34% 28%, #fff4c9 0 18%, var(--orbit-color) 46%, rgba(120, 54, 12, 0.85) 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 235, 183, 0.16),
+    0 0 14px var(--orbit-soft);
+  transform: scale(0.78);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-radius 0.35s ease;
+}
+
+.nav__link::after {
+  content: '';
+  position: absolute;
+  left: 1.15rem;
+  right: 0;
+  bottom: 0.1rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--orbit-color), transparent);
+  opacity: 0;
+  transform: scaleX(0.35);
+  transform-origin: center;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.nav__link:hover {
+  color: #ffe3aa;
+  text-shadow: 0 0 16px var(--orbit-soft);
+  transform: translateY(-1px);
+}
+
+.nav__link:hover::before {
+  transform: scale(1);
+  box-shadow:
+    0 0 0 1px rgba(255, 238, 196, 0.32),
+    0 0 18px var(--orbit-color),
+    0 0 34px var(--orbit-soft);
+}
+
+.nav__link:hover::after {
+  opacity: 0.9;
+  transform: scaleX(1);
+}
+
+.nav__link[data-orbit="dawn"] {
+  --orbit-color: #ffb45f;
+  --orbit-soft: rgba(255, 180, 95, 0.28);
+}
+
+.nav__link[data-orbit="zenith"] {
+  --orbit-color: #ffd36e;
+  --orbit-soft: rgba(255, 211, 110, 0.24);
+}
+
+.nav__link[data-orbit="flare"] {
+  --orbit-color: #ff7a2f;
+  --orbit-soft: rgba(255, 122, 47, 0.28);
+}
+
+.nav__link[data-orbit="flare"]::before {
+  border-radius: 42% 58% 45% 55%;
+}
+
+.nav__link[data-orbit="dusk"] {
+  --orbit-color: #c77925;
+  --orbit-soft: rgba(199, 121, 37, 0.26);
+}
+
+.nav__link[data-orbit="dusk"]::before {
+  background:
+    radial-gradient(circle at 31% 27%, #fff0bf 0 15%, var(--orbit-color) 44%, transparent 45%),
+    linear-gradient(90deg, transparent 44%, rgba(13, 13, 13, 0.92) 46% 100%);
+}
+
+/* ── Star pseudo-elements base (always present, invisible by default) ── */
+.nav::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 5%;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: white;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.nav::after {
+  content: '';
+  position: absolute;
+  top: 25px;
+  left: 85%;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: white;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+/* ── Constellation line pseudo-elements base ── */
+.nav__left::after,
+.nav__right::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 0;
+  border-top: 1px solid transparent;
+  pointer-events: none;
+  transition: border-color 0.9s ease;
+}
+
+/* ── Night state (data-lamp="off") ── */
+[data-lamp="off"] .nav__link {
+  color: rgba(255,255,255,0.7);
+  text-shadow: 0 0 8px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
+}
+
+/* 6 stars via ::before: spread left side + skip center + two right */
+[data-lamp="off"] .nav::before {
+  opacity: 0.6;
+  animation: nav-star-pulse 3s ease-in-out infinite;
+  box-shadow:
+     7vw   5px white,
+    17vw  -3px white,
+    29vw  14px white,
+    55vw   2px white,
+    70vw   9px white;
+}
+
+/* 4 stars via ::after: anchor right side */
+[data-lamp="off"] .nav::after {
+  opacity: 0.6;
+  animation: nav-star-pulse 3s ease-in-out infinite 1.5s;
+  box-shadow:
+    -18vw  8px white,
+     -8vw -6px white,
+      5vw 12px white;
+}
+
+/* Constellation line connecting links in each panel */
+[data-lamp="off"] .nav__left::after,
+[data-lamp="off"] .nav__right::after {
+  border-top-color: rgba(255,255,255,0.08);
+}
+
+/* ── Day state (data-lamp="on") ── */
+[data-lamp="on"] .nav__left,
+[data-lamp="on"] .nav__right {
+  border-bottom: 1px solid rgba(232,132,26,0.15);
+}
+
+[data-lamp="on"] .nav__link {
+  color: #f2c477;
+  text-shadow: 0 0 10px rgba(232,132,26,0.42), 0 0 24px rgba(232,132,26,0.18);
+}
+
+/* ── Star pulse animation ── */
+@keyframes nav-star-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 0.15; }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+
+  .nav__hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 95;
+    background: rgba(13, 13, 13, 0.88);
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: #f0f0f0;
+    font-size: 1.2rem;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    font-family: inherit;
+    transition: background 0.2s, color 0.2s;
+    line-height: 1;
+  }
+
+  .nav__hamburger:active {
+    background: #e8841a;
+    color: #1a1a1a;
+  }
+
+  .nav__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav__drawer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(80vw, 320px);
+    height: 100%;
+    background: #111;
+    border-left: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    padding: 4.5rem 2rem 2rem;
+    gap: 0.25rem;
+  }
+
+  .nav__close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.45);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 0.4rem;
+    line-height: 1;
+    font-family: inherit;
+  }
+
+  .nav__drawer-link {
+    --orbit-color: #e8841a;
+    --orbit-soft: rgba(232, 132, 26, 0.18);
+    position: relative;
+    color: #f0f0f0;
+    text-decoration: none;
+    font-size: 1.35rem;
+    padding: 1rem 0 1rem 2rem;
+    border-bottom: 1px solid rgba(255, 190, 87, 0.1);
+    transition: color 0.2s, transform 0.2s;
+    display: block;
+  }
+
+  .nav__drawer-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0.82rem;
+    height: 0.82rem;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 34% 28%, #fff4c9 0 18%, var(--orbit-color) 46%, rgba(120, 54, 12, 0.85) 100%);
+    box-shadow: 0 0 18px var(--orbit-soft);
+    transform: translateY(-50%);
+  }
+
+  .nav__drawer-link:active {
+    color: #ffe3aa;
+    transform: translateX(2px);
+  }
+
+  .nav__drawer-link[data-orbit="dawn"] {
+    --orbit-color: #ffb45f;
+    --orbit-soft: rgba(255, 180, 95, 0.3);
+  }
+
+  .nav__drawer-link[data-orbit="zenith"] {
+    --orbit-color: #ffd36e;
+    --orbit-soft: rgba(255, 211, 110, 0.28);
+  }
+
+  .nav__drawer-link[data-orbit="flare"] {
+    --orbit-color: #ff7a2f;
+    --orbit-soft: rgba(255, 122, 47, 0.32);
+  }
+
+  .nav__drawer-link[data-orbit="flare"]::before {
+    border-radius: 42% 58% 45% 55%;
+  }
+
+  .nav__drawer-link[data-orbit="dusk"] {
+    --orbit-color: #c77925;
+    --orbit-soft: rgba(199, 121, 37, 0.28);
+  }
+
+  .nav__drawer-link[data-orbit="dusk"]::before {
+    background:
+      radial-gradient(circle at 31% 27%, #fff0bf 0 15%, var(--orbit-color) 44%, transparent 45%),
+      linear-gradient(90deg, transparent 44%, rgba(17, 17, 17, 0.92) 46% 100%);
+  }
+}
