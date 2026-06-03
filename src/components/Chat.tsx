@@ -1,44 +1,26 @@
 import { useState, useEffect, useRef } from 'react';
 import './Chat.css';
-import { getChatReply } from './chatReplies';
-
-interface Message {
-  id: number;
-  type: 'user' | 'bot';
-  text: string;
-}
+import { useChat } from '../hooks/useChat';
 
 export default function Chat() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const { messages, isLoading, sendMessage } = useChat();
   const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const endRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (messages.length === 0 && !isTyping) return;
-
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
+    const el = messagesRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages, isLoading]);
 
   const send = () => {
     const text = input.trim();
-    if (!text || isTyping) return;
-
-    setMessages((prev) => [...prev, { id: Date.now(), type: 'user', text }]);
+    if (!text || isLoading) return;
     setInput('');
-    setIsTyping(true);
-
-    window.setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { id: Date.now() + 1, type: 'bot', text: getChatReply(text) },
-      ]);
-      setIsTyping(false);
-    }, 450);
+    sendMessage(text);
   };
 
   return (
-    <section id="chat" className="section-inner">
+    <section id="chat" className="section-inner" data-reveal="fade">
       <div className="chat__header">
         <p className="chat__kicker">respostas instantaneas</p>
         <h2 className="section-title">Converse comigo</h2>
@@ -93,28 +75,22 @@ export default function Chat() {
           <span className="chat__scan chat__scan--b" />
         </div>
 
-        <div className="chat__messages">
-          {messages.length === 0 && !isTyping && (
-            <p className="chat__empty">Sua conversa comeca aqui...</p>
-          )}
-
-          {messages.map((msg) => (
-            <div key={msg.id} className={`chat__row chat__row--${msg.type}`}>
-              <div className={`chat__bubble chat__bubble--${msg.type}`}>
-                {msg.text}
+        <div className="chat__messages" ref={messagesRef}>
+          {messages.map((msg, i) => (
+            <div key={i} className={`chat__row chat__row--${msg.role === 'user' ? 'user' : 'bot'}`}>
+              <div className={`chat__bubble chat__bubble--${msg.role === 'user' ? 'user' : 'bot'}`}>
+                {msg.content}
               </div>
             </div>
           ))}
 
-          {isTyping && (
+          {isLoading && (
             <div className="chat__row chat__row--bot">
               <div className="chat__bubble chat__bubble--bot chat__bubble--typing">
                 Respondendo...
               </div>
             </div>
           )}
-
-          <div ref={endRef} />
         </div>
 
         <div className="chat__input-row">
@@ -125,9 +101,9 @@ export default function Chat() {
             placeholder="Digite sua mensagem..."
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && send()}
-            disabled={isTyping}
+            disabled={isLoading}
           />
-          <button className="chat__send" onClick={send} disabled={isTyping}>
+          <button className="chat__send" onClick={send} disabled={isLoading}>
             Enviar
           </button>
         </div>

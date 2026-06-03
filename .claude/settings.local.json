@@ -1,7 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\Paulo\\\\OneDrive\\\\Área de Trabalho\\\\Apps\\\\portifolio-profissional\" -Recurse -Depth 3 -Force | Where-Object { $_.FullName -notmatch 'node_modules' -and $_.FullName -notmatch '\\\\.git' } | ForEach-Object { $_.FullName })"
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\Paulo\\\\OneDrive\\\\Área de Trabalho\\\\Apps\\\\portifolio-profissional\" -Recurse -Depth 3 -Force | Where-Object { $_.FullName -notmatch 'node_modules' -and $_.FullName -notmatch '\\\\.git' } | ForEach-Object { $_.FullName })",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__get_page_text",
+      "mcp__Claude_in_Chrome__computer",
+      "Bash(npx tsc *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/)",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:5173/\" -TimeoutSec 5 -UseBasicParsing; \"Status: $\\($r.StatusCode\\) | Len: $\\($r.Content.Length\\)\" } catch { \"Error: $_\" })",
+      "Bash(npm run *)",
+      "Bash(powershell -Command 'try { $r = Invoke-WebRequest -Uri '\\\\''http://localhost:5173/'\\\\'' -TimeoutSec 5 -UseBasicParsing; \"Status: $\\($r.StatusCode\\)\" } catch { \"Error: $_\" }')"
     ]
   }
 }

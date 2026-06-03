@@ -1,7 +1,4 @@
-import { useState, type CSSProperties } from 'react';
-
-import { useReveal } from './hooks/useReveal';
-import Lamp from './components/Lamp';
+import { useState, useEffect } from 'react';
 import Hero from './components/Hero';
 import About from './components/About';
 import Projects from './components/Projects';
@@ -17,32 +14,42 @@ const NAV_LINKS = [
 ] as const;
 
 export default function App() {
-  const [isOn, setIsOn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const toggleLight = () => setIsOn((prev: boolean) => !prev);
 
-  useReveal(isOn);
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('revealed');
+            obs.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }
+    );
 
-  const navVisible = {
-    opacity: isOn ? 1 : 0,
-    pointerEvents: (isOn ? 'auto' : 'none') as CSSProperties['pointerEvents'],
-    transition: 'opacity 0.9s ease 0.3s',
-  };
+    const observeAll = () => {
+      document.querySelectorAll('[data-reveal]:not(.revealed)').forEach((el) => {
+        obs.observe(el);
+      });
+    };
+
+    observeAll();
+    const interval = setInterval(observeAll, 500);
+
+    return () => {
+      obs.disconnect();
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
-    <div
-      data-lamp={isOn ? 'on' : 'off'}
-      style={{ background: 'transparent', minHeight: '100vh', transition: 'background 1.2s ease, color 1.2s ease' }}
-    >
-
-      <Lamp isOn={isOn} onToggle={toggleLight} />
-
-
-      {/* Fixed nav — desktop */}
+    <div style={{ background: 'transparent', minHeight: '100vh' }}>
       <nav
         className="nav"
         aria-label="Navegação principal"
-        style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 400, ...navVisible }}
+        style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 400 }}
       >
         <div className="nav__left">
           <a href="#sobre" className="nav__link" data-orbit="dawn">Sobre</a>
@@ -55,10 +62,8 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Mobile hamburger */}
       <button
         className="nav__hamburger"
-        style={navVisible}
         onClick={() => setMenuOpen(true)}
         aria-label="Abrir menu"
         aria-expanded={menuOpen}
@@ -66,7 +71,6 @@ export default function App() {
         ☰
       </button>
 
-      {/* Mobile fullscreen drawer */}
       {menuOpen && (
         <div className="nav__overlay" onClick={() => setMenuOpen(false)}>
           <div
@@ -78,28 +82,21 @@ export default function App() {
           >
             <button className="nav__close" onClick={() => setMenuOpen(false)} aria-label="Fechar menu">✕</button>
             {NAV_LINKS.map(({ label, href, orbit }) => (
-              <a key={href} href={href} className="nav__drawer-link" data-orbit={orbit} onClick={() => setMenuOpen(false)}>{label}</a>
+              <a key={href} href={href} className="nav__drawer-link" data-orbit={orbit} onClick={() => setMenuOpen(false)}>
+                {label}
+              </a>
             ))}
           </div>
         </div>
       )}
 
-      {/* Site content — fades in when lamp is on */}
-      <main
-        style={{
-          opacity: isOn ? 1 : 0,
-          transition: 'opacity 0.9s ease 0.3s',
-          pointerEvents: isOn ? 'auto' : 'none',
-          paddingTop: '80px',
-        }}
-      >
+      <main style={{ paddingTop: '80px' }}>
         <Hero />
         <About />
         <Projects />
         <Chat />
         <Contact />
       </main>
-
     </div>
   );
 }
