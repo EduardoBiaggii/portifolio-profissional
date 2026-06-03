@@ -7,7 +7,7 @@ export default function Nav() {
 
   return (
     <>
-      {/* Desktop nav */}
+      {/* Desktop Floating Nav */}
       <nav className="nav" aria-label="Navegação principal">
         <div className="nav__left">
           <a href="#sobre" className="nav__link" data-orbit="dawn">Sobre</a>
@@ -15,7 +15,7 @@ export default function Nav() {
         </div>
 
         <div className="nav__center">
-          <a href="#top" className="nav__lamp" aria-label="Início">
+          <a href="#top" className="nav__lamp" aria-label="Voltar ao início">
             <svg className="nav__lamp-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 2.61 1.41 4.89 3.5 6.19V17a1 1 0 001 1h5a1 1 0 001-1v-1.81C17.59 13.89 19 11.61 19 9c0-3.87-3.13-7-7-7z" fill="currentColor" opacity="0.9"/>
               <path d="M9 21a1 1 0 001 1h4a1 1 0 000-2H10a1 1 0 00-1 1z" fill="currentColor"/>
@@ -35,24 +35,31 @@ export default function Nav() {
         </div>
       </nav>
 
-      {/* Mobile hamburger */}
+      {/* Mobile Hamburger (desenhado com linhas CSS para morphing) */}
       <button
-        className="nav__hamburger"
+        className={`nav__hamburger ${open ? 'nav__hamburger--active' : ''}`}
         onClick={() => setOpen(true)}
         aria-label="Abrir menu"
         aria-expanded={open}
       >
-        ☰
+        <span className="nav__hamburger-bar"></span>
+        <span className="nav__hamburger-bar"></span>
       </button>
 
-      {/* Mobile drawer */}
+      {/* Mobile Drawer (Overlay e Gaveta de Vidro) */}
       {open && (
         <div className="nav__overlay" onClick={close}>
           <div
             className="nav__drawer"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu de navegação"
           >
-            <button className="nav__close" onClick={close} aria-label="Fechar menu">✕</button>
+            <button className="nav__close" onClick={close} aria-label="Fechar menu">
+              <span className="nav__close-bar"></span>
+              <span className="nav__close-bar"></span>
+            </button>
             <a href="#sobre"    className="nav__drawer-link" data-orbit="dawn" onClick={close}>Sobre</a>
             <a href="#projetos" className="nav__drawer-link" data-orbit="zenith" onClick={close}>Projetos</a>
             <a href="#chat"     className="nav__drawer-link" data-orbit="flare" onClick={close}>Chat</a>
