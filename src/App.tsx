@@ -78,12 +78,17 @@ export default function App() {
           }
         });
       },
-      { threshold: 0.08, rootMargin: '0px 0px -5% 0px' }
+      { threshold: 0, rootMargin: '0px' }
     );
 
     const observeAll = () => {
       document.querySelectorAll('[data-reveal]:not(.revealed)').forEach((el) => {
-        obs.observe(el);
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          el.classList.add('revealed');
+        } else {
+          obs.observe(el);
+        }
       });
     };
 
