@@ -23,7 +23,12 @@ export function useChat() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://chat-hyv5fh3kiq-uc.a.run.app', {
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.startsWith('192.168.');
+      const apiUrl = isLocal 
+        ? 'https://portifolio-profissional-drab.vercel.app/api/chat'
+        : '/api/chat';
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
