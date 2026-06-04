@@ -22,7 +22,7 @@ const certs = [
   },
   {
     course: 'Algoritmo',
-    institution: 'Curso Online',
+    institution: 'CursoEmVideo',
     year: 'Abr 2023',
     area: 'Lógica de Programação · 40h',
     icon: '⚙️',
