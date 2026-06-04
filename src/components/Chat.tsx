@@ -31,6 +31,8 @@ export default function Chat() {
 
       <div className="chat__box">
         <div className="chat__neural" aria-hidden="true">
+          <div className="chat__glow-blob chat__glow-blob--1" />
+          <div className="chat__glow-blob chat__glow-blob--2" />
           <svg className="chat__neural-lines" viewBox="0 0 620 260" preserveAspectRatio="none">
             {/* Glow layer — wide blurred trails */}
             <path className="chat__path--glow" d="M18 190 C120 90 170 100 250 142 S390 210 492 82 S585 46 610 74" />
