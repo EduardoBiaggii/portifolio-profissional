@@ -44,16 +44,24 @@
   display: block;
 }
 
-/* ── Reveal animations ── */
+/* Estado inicial */
+.about-section .section-title,
+.about-section .about__p {
+  opacity: 0;
+}
+
+/* Quando ganha .revealed */
 .about-section.revealed .section-title {
   animation: flipIn 0.8s var(--ease) both;
   transform-origin: top center;
   perspective: 600px;
 }
-
 .about-section.revealed .about__p {
   animation: fadeIn 0.7s var(--ease) both;
 }
+.about-section.revealed .about__p:nth-of-type(1) { animation-delay: 0.1s; }
+.about-section.revealed .about__p:nth-of-type(2) { animation-delay: 0.2s; }
+.about-section.revealed .about__p:nth-of-type(3) { animation-delay: 0.3s; }
 
 /* ── Desktop: two-column ── */
 @media (min-width: 769px) {

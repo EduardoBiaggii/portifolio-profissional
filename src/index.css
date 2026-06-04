@@ -116,16 +116,8 @@ body::after {
   margin-bottom: 1.5rem;
 }
 
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
-}
-
-[data-reveal].revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
+[data-reveal] { opacity: 0; }
+[data-reveal].revealed { opacity: 1; }
 
 
 @media (prefers-reduced-motion: reduce) {

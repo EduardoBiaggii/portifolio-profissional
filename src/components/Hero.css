@@ -429,27 +429,32 @@
   color: #06b6d4;
 }
 
-/* ── Reveal Animations ── */
+/* Estado inicial — ANTES da classe revealed */
+.hero__portrait-outer,
+.hero__name-first,
+.hero__name-last,
+.hero__tagline,
+.hero__cta-row,
+.hero__credentials {
+  opacity: 0;
+}
+
+/* Quando hero ganha .revealed, os filhos animam */
 .hero.revealed .hero__portrait-outer {
   animation: flipIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-
 .hero.revealed .hero__name-first {
   animation: zoomIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
 }
-
 .hero.revealed .hero__name-last {
   animation: zoomIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
 }
-
 .hero.revealed .hero__tagline {
   animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
 }
-
 .hero.revealed .hero__cta-row {
   animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
 }
-
 .hero.revealed .hero__credentials {
   animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s both;
 }
