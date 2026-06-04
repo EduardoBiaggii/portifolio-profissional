@@ -67,7 +67,7 @@ Se não for verdade confirmada, não diga.`;
 
 exports.chat = onRequest(
   {
-    cors: ['https://eduardobiaggii.github.io', 'http://localhost:3000', 'http://localhost:3001'],
+    cors: true,
     invoker: 'public',
     secrets: ['GROQ_API_KEY'],
   },
