@@ -69,40 +69,36 @@ function smoothScrollTo(targetSelector: string, duration: number = 800, offset: 
 
 export default function App() {
   useEffect(() => {
+    const els = document.querySelectorAll('[data-reveal]');
+    
     const obs = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e, i) => {
+        entries.forEach((e) => {
           if (e.isIntersecting) {
-            const el = e.target as HTMLElement;
-            el.style.animationDelay = `${i * 0.1}s`;
-            el.classList.add('revealed');
-            obs.unobserve(el);
+            e.target.classList.add('revealed');
+            obs.unobserve(e.target);
           }
         });
       },
-      { threshold: 0, rootMargin: '0px' }
+      { threshold: 0, rootMargin: '0px 0px 0px 0px' }
     );
 
-    const observeAll = () => {
-      document.querySelectorAll('[data-reveal]:not(.revealed)').forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight) {
-          el.classList.add('revealed');
-        } else {
+    // Força o estado inicial antes de observar
+    els.forEach((el) => {
+      (el as HTMLElement).style.opacity = '0';
+      (el as HTMLElement).style.transform = 'translateY(32px)';
+    });
+
+    // Pequeno delay pra garantir que o estado inicial foi aplicado
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        els.forEach((el) => {
+          (el as HTMLElement).style.opacity = '';
+          (el as HTMLElement).style.transform = '';
           obs.observe(el);
-        }
+        });
       });
-    };
-
-    // Roda imediatamente e após delays crescentes
-    observeAll();
-    const t1 = setTimeout(observeAll, 300);
-    const t2 = setTimeout(observeAll, 800);
-    const t3 = setTimeout(observeAll, 1500);
-
-    // MutationObserver pra pegar elementos que entram no DOM depois
-    const mut = new MutationObserver(observeAll);
-    mut.observe(document.body, { childList: true, subtree: true });
+    });
 
     const handleAnchorClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest('a');
@@ -118,10 +114,6 @@ export default function App() {
 
     return () => {
       obs.disconnect();
-      mut.disconnect();
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
       document.removeEventListener('click', handleAnchorClick);
     };
   }, []);
