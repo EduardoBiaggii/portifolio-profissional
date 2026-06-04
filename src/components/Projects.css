@@ -369,6 +369,10 @@
 }
 
 /* ── Reveal animation ── */
+.projects-section .project-card {
+  opacity: 0;
+}
+
 .projects-section.revealed .project-card {
   animation: zoomIn 0.9s var(--ease) both;
 }
