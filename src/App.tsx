@@ -69,7 +69,6 @@ function smoothScrollTo(targetSelector: string, duration: number = 800, offset: 
 
 export default function App() {
   useEffect(() => {
-    // 1. Intersection Observer para animações de fade-in ao rolar
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -79,7 +78,7 @@ export default function App() {
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }
+      { threshold: 0.08, rootMargin: '0px 0px -5% 0px' }
     );
 
     const observeAll = () => {
@@ -88,14 +87,19 @@ export default function App() {
       });
     };
 
+    // Roda imediatamente e após delays crescentes
     observeAll();
-    const interval = setInterval(observeAll, 500);
+    const t1 = setTimeout(observeAll, 300);
+    const t2 = setTimeout(observeAll, 800);
+    const t3 = setTimeout(observeAll, 1500);
 
-    // 2. Interceptador global de cliques para rolagem suave com compensação
+    // MutationObserver pra pegar elementos que entram no DOM depois
+    const mut = new MutationObserver(observeAll);
+    mut.observe(document.body, { childList: true, subtree: true });
+
     const handleAnchorClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest('a');
       if (!anchor) return;
-
       const href = anchor.getAttribute('href');
       if (href && href.startsWith('#')) {
         e.preventDefault();
@@ -107,7 +111,10 @@ export default function App() {
 
     return () => {
       obs.disconnect();
-      clearInterval(interval);
+      mut.disconnect();
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
       document.removeEventListener('click', handleAnchorClick);
     };
   }, []);
