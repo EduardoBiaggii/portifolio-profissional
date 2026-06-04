@@ -3,6 +3,7 @@ import Nav from './components/Nav';
 import Hero from './components/Hero';
 import About from './components/About';
 import Projects from './components/Projects';
+import Certificates from './components/Certificates';
 import Chat from './components/Chat';
 import Contact from './components/Contact';
 
@@ -120,6 +121,7 @@ export default function App() {
         <Hero />
         <About />
         <Projects />
+        <Certificates />
         <Chat />
         <Contact />
       </main>

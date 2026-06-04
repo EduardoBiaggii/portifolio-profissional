@@ -95,36 +95,30 @@
   transform: translateX(-50%) scale(1);
 }
 
-/* Ícone Central da Lâmpada */
-.nav__lamp {
+.nav__logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: 
-    color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
 }
 
-.nav__lamp-icon {
-  width: 18px;
-  height: 18px;
-}
-
-.nav__lamp:hover {
-  color: #fcd34d;
-  background: rgba(252, 211, 77, 0.04);
-  border-color: rgba(252, 211, 77, 0.3);
-  filter: drop-shadow(0 0 10px rgba(252, 211, 77, 0.65));
-  transform: scale(1.08);
+.nav__logo:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 0 14px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
 /* ── Mobile Hamburger & Drawer ── */
