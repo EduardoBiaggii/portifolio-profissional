@@ -116,15 +116,26 @@ body::after {
   margin-bottom: 1.5rem;
 }
 
-/* ── Scroll-reveal — value-specific ── */
-[data-reveal="fade"] { opacity: 0; }
-[data-reveal="fade"].revealed { animation: fadeIn 0.9s var(--ease) forwards; }
+[data-reveal] {
+  opacity: 0;
+  transition: none;
+}
 
-[data-reveal="zoom"] { opacity: 0; }
-[data-reveal="zoom"].revealed { animation: zoomIn 0.9s var(--ease) forwards; }
+[data-reveal].revealed {
+  opacity: 1;
+}
 
-[data-reveal="flip"] { opacity: 0; transform-style: preserve-3d; }
-[data-reveal="flip"].revealed { animation: flipIn 0.9s var(--ease) forwards; }
+[data-reveal="fade"].revealed {
+  animation: fadeIn 0.9s var(--ease) both;
+}
+
+[data-reveal="zoom"].revealed {
+  animation: zoomIn 0.9s var(--ease) both;
+}
+
+[data-reveal="flip"].revealed {
+  animation: flipIn 0.9s var(--ease) both;
+}
 
 
 @media (prefers-reduced-motion: reduce) {

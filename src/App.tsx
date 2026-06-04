@@ -71,10 +71,12 @@ export default function App() {
   useEffect(() => {
     const obs = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
+        entries.forEach((e, i) => {
           if (e.isIntersecting) {
-            e.target.classList.add('revealed');
-            obs.unobserve(e.target);
+            const el = e.target as HTMLElement;
+            el.style.animationDelay = `${i * 0.1}s`;
+            el.classList.add('revealed');
+            obs.unobserve(el);
           }
         });
       },
