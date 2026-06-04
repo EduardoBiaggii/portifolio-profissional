@@ -1,4 +1,5 @@
 import './Projects.css';
+import plixAppLogo from '../assets/apple-touch-icon.png';
 
 type Tech = {
   name: string;
@@ -147,11 +148,7 @@ export default function Projects() {
                 aria-label="Abrir Plix App"
                 className="project-card__logo-anchor"
               >
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="project-card__logo">
-                  <rect width="100" height="100" rx="22" fill="#0c0c0b" />
-                  <circle cx="50" cy="50" r="38" stroke="rgba(200, 255, 0, 0.15)" strokeWidth="2" />
-                  <path d="M38 70 V30 H58 C68 30 68 50 58 50 H38" stroke="#c8ff00" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <img src={plixAppLogo} alt="Plix App" className="project-card__logo" />
               </a>
             </div>
             <div className="project-card__header-info">
